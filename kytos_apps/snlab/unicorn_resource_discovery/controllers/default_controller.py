@@ -35,13 +35,12 @@ def query_path_post(query_set):
     """
     if connexion.request.is_json:
         query_set = QueryRequests.from_dict(connexion.request.get_json())
-        log.info(query_set[0])
-        log.info(len(query_set))
+        #log.info(query_set[0])
+        #log.info(len(query_set))
 
         """
         open the egress2ingress mapping file
         """
-#        pprint(json.loads(connexion.request.get_json()))
         with open(os.path.dirname(__file__) + '/../egress2ingress-config.json') as data_file:
             egress2ingress = json.load(data_file)
         pprint(egress2ingress)
@@ -58,11 +57,15 @@ def query_path_post(query_set):
             """
             get the next ingress point of each flow from pre-configured e2i mapping
             """
-#            print(egress2ingress[egress[0]][egress[1]])
-            next_ingress_array.append("{0}".format(egress2ingress[egress[0]][egress[1]]))
-#    print(next_ingress_array)
-    return next_ingress_array
-#    return json.dumps(["1.2.3.4", "3.4.5.6"])
+            next_ingress_array.append(egress2ingress[egress[0]][egress[1]])
+        return next_ingress_array
+    else:
+        """TODO: this part seems redundant?"""
+        log.info('it is not a json request')
+        code = 'E_SYNTAX'
+        message = 'The input does not follow the JSON format'
+        meta = {{'code': code, 'message': message}}
+        return json.dumps(meta)
 #    return json.dumps(next_ingress_array)    
 #    return connexion.request.get_json()
     #return 'do some magic!'
@@ -82,6 +85,9 @@ def query_resource_post(query_set):
     return 'do some magic!'
 
 def get_egress_point(query):
+    """
+    TODO: wait till the routing manager is done
+    """
     return ('192.151.1.102', '2')
 
 
