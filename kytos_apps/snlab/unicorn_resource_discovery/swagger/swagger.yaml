@@ -64,26 +64,31 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       x-swagger-router-controller: "napps.snlab.unicorn_resource_discovery.controllers.default_controller"
 definitions:
-  Ipv4Addr:
-    type: "string"
-  PortNumber:
-    type: "integer"
-    format: "int32"
-    minimum: 0
-    maximum: 65535
   FlowSpec:
     type: "object"
     required:
     - "dstIP"
     properties:
       dstIP:
-        $ref: "#/definitions/Ipv4Addr"
+        type: "string"
+        pattern: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$"
+        x-regex: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$"
+        x-modifiers: []
       srcIP:
-        $ref: "#/definitions/Ipv4Addr"
+        type: "string"
+        pattern: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|$"
+        x-regex: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|$"
+        x-modifiers: []
       srcPort:
-        $ref: "#/definitions/PortNumber"
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 65535
       dstPort:
-        $ref: "#/definitions/PortNumber"
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 65535
       protocol:
         type: "string"
   QueryDesc:
@@ -95,7 +100,10 @@ definitions:
       flow:
         $ref: "#/definitions/FlowSpec"
       ingress-point:
-        $ref: "#/definitions/Ipv4Addr"
+        type: "string"
+        pattern: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|$"
+        x-regex: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|$"
+        x-modifiers: []
   ANE:
     type: "object"
     required:
@@ -154,7 +162,8 @@ definitions:
     description: "each item represents the ingress point from where the corresponding\
       \ flow should enter the next domain."
     items:
-      $ref: "#/definitions/Ipv4Addr"
+      type: "string"
+      pattern: "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|$"
     example:
     - "172.18.0.3"
     - "172.18.0.4"
